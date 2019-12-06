@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_denuncia:
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
+                System.out.println("Cambio a segunda pantalla");
                 break;
         }
 
