@@ -1,5 +1,6 @@
 package com.example.autonomo_obtenerubicacionreal;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
@@ -9,11 +10,24 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    DatabaseReference mDatabase;
+    private ArrayList<Marker> tmpRealMarkers = new ArrayList<>();
+    private ArrayList<Marker> realTimeMarkers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +37,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Grupo");
     }
 
 
@@ -38,10 +53,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
+        /*Ubicacion ubi = new Ubicacion();
+        Map<String, String> ubicaciones = new HashMap<String, String>();
+        ubicaciones.put("latitud",String.valueOf(ubi.getLatitud()));
+        ubicaciones.put("longitud", String.valueOf(ubi.getLongitud()));
+        mDatabase.child("Grupo 5").child("ubicaciones");
+        mDatabase.setValue("Id");
+        mDatabase.child("Id").child("latitud").setValue(ubi.getLatitud());
+        mDatabase.child("Id").child("longitud").setValue(ubi.getLongitud());
+        */
+        //Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
+        LatLng FCNM_espol = new LatLng(-2.1458275, -79.9683663);
+        LatLng sweet_espol = new LatLng(-2.1459422, -79.9673716);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(FCNM_espol).title("Estamos en FCNM de ESPOL"));
+        mMap.addMarker(new MarkerOptions().position(sweet_espol).title("Estamos en el sweet de ESPOL"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
